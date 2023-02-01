@@ -1,5 +1,4 @@
 package com.study.projectboard.repository;
-
 import com.study.projectboard.config.JpaConfig;
 import com.study.projectboard.domain.Article;
 import org.junit.jupiter.api.DisplayName;
