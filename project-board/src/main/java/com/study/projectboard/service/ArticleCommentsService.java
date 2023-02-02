@@ -1,7 +1,6 @@
 package com.study.projectboard.service;
 
 import com.study.projectboard.dto.ArticleCommentDto;
-import com.study.projectboard.dto.ArticleUpdateDto;
 import com.study.projectboard.repository.ArticleCommentRepository;
 import com.study.projectboard.repository.ArticleRepository;
 import lombok.RequiredArgsConstructor;
@@ -28,8 +27,7 @@ public class ArticleCommentsService {
     }
 
     @Transactional
-    public void updateArticleComment(Long articleCommentId, ArticleUpdateDto articleUpdateDto) {
-
+    public void updateArticleComment(ArticleCommentDto dto) {
     }
 
     @Transactional
