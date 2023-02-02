@@ -5,7 +5,6 @@ import com.querydsl.core.types.dsl.StringExpression;
 import com.study.projectboard.domain.ArticleComment;
 import com.study.projectboard.domain.QArticleComment;
 import org.springframework.data.jpa.repository.JpaRepository;
-import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.querydsl.QuerydslPredicateExecutor;
 import org.springframework.data.querydsl.binding.QuerydslBinderCustomizer;
 import org.springframework.data.querydsl.binding.QuerydslBindings;
