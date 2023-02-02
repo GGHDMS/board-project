@@ -19,7 +19,6 @@ public interface ArticleCommentRepository
         QuerydslPredicateExecutor<ArticleComment>,
         QuerydslBinderCustomizer<QArticleComment> {
 
-    @Query("select a from ArticleComment a where a.article.id= :articleid")
     List<ArticleComment> findByArticle_Id(Long articleId);
 
     @Override
