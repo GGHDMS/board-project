@@ -1,4 +1,4 @@
-package com.study.projectboard.response;
+package com.study.projectboard.dto.response;
 
 import com.study.projectboard.dto.ArticleWithCommentsDto;
 import lombok.Data;
@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
-public class ArticleWithCommentResponse {
+public class ArticleWithCommentsResponse {
     Long id;
     String title;
     String content;
@@ -17,9 +17,9 @@ public class ArticleWithCommentResponse {
     LocalDateTime createdAt;
     String email;
     String nickname;
-    Set<ArticleCommentResponse> articleCommentResponses;
+    Set<ArticleCommentResponse> articleCommentsResponse;
 
-    private ArticleWithCommentResponse(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname, Set<ArticleCommentResponse> articleCommentResponses) {
+    private ArticleWithCommentsResponse(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname, Set<ArticleCommentResponse> articleCommentsResponse) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -27,20 +27,20 @@ public class ArticleWithCommentResponse {
         this.createdAt = createdAt;
         this.email = email;
         this.nickname = nickname;
-        this.articleCommentResponses = articleCommentResponses;
+        this.articleCommentsResponse = articleCommentsResponse;
     }
 
-    public static ArticleWithCommentResponse of(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname, Set<ArticleCommentResponse> articleCommentResponses) {
-        return new ArticleWithCommentResponse(id, title, content, hashtag, createdAt, email, nickname, articleCommentResponses);
+    public static ArticleWithCommentsResponse of(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname, Set<ArticleCommentResponse> articleCommentResponses) {
+        return new ArticleWithCommentsResponse(id, title, content, hashtag, createdAt, email, nickname, articleCommentResponses);
     }
 
-    public static ArticleWithCommentResponse from(ArticleWithCommentsDto dto) {
+    public static ArticleWithCommentsResponse from(ArticleWithCommentsDto dto) {
         String nickname = dto.getUserAccountDto().getNickname();
         if (nickname == null || nickname.isBlank()) {
             nickname = dto.getUserAccountDto().getUserId();
         }
 
-        return new ArticleWithCommentResponse(
+        return new ArticleWithCommentsResponse(
                 dto.getId(),
                 dto.getTitle(),
                 dto.getContent(),

@@ -1,4 +1,4 @@
-package com.study.projectboard.response;
+package com.study.projectboard.dto.response;
 
 import com.study.projectboard.dto.ArticleDto;
 import lombok.Data;
