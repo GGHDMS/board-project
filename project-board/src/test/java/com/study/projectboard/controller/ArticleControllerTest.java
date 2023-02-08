@@ -78,11 +78,11 @@ class ArticleControllerTest {
 
         //when
         mvc.perform(
-                get("/articles")
-                        .queryParam("page", String.valueOf(pageNumber))
-                        .queryParam("size", String.valueOf(pageSize))
-                        .queryParam("sort", sortName + "," + direction)
-        )
+                        get("/articles")
+                                .queryParam("page", String.valueOf(pageNumber))
+                                .queryParam("size", String.valueOf(pageSize))
+                                .queryParam("sort", sortName + "," + direction)
+                )
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("articles/index"))
@@ -95,20 +95,25 @@ class ArticleControllerTest {
     }
 
 
-    @DisplayName(("[View][GET] 게시글 상세 페이지 - 정상 호출"))
+    @DisplayName(("[View][GET] 게시글 페이지 - 정상 호출"))
     @Test
     public void nothing_requestingArticleView_returnArticleView() throws Exception {
         //given
         Long articleId = 1L;
+        long totalCount = 1L;
         given(articleService.getArticle(articleId)).willReturn(createArticleWithCommentsDto());
+        given(articleService.getArticleCount()).willReturn(totalCount);
         //when&then
         mvc.perform(get("/articles/" + 1L))
                 .andExpect(status().isOk())
                 .andExpect(content().contentTypeCompatibleWith(MediaType.TEXT_HTML))
                 .andExpect(view().name("articles/detail"))
                 .andExpect(model().attributeExists("article"))
-                .andExpect(model().attributeExists("articleComments"));
+                .andExpect(model().attributeExists("articleComments"))
+                .andExpect(model().attribute("totalCount", totalCount));
+
         then(articleService).should().getArticle(articleId);
+        then(articleService).should().getArticleCount();
     }
 
 

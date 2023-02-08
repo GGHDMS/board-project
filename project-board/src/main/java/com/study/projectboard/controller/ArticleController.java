@@ -6,6 +6,7 @@ import com.study.projectboard.dto.response.ArticleWithCommentsResponse;
 import com.study.projectboard.service.ArticleService;
 import com.study.projectboard.service.PaginationService;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
@@ -27,6 +28,7 @@ import java.util.List;
  */
 
 
+@Slf4j
 @RequiredArgsConstructor
 @RequestMapping("/articles")
 @Controller
@@ -54,8 +56,11 @@ public class ArticleController {
     @GetMapping("/{articleId}")
     public String articles(@PathVariable Long articleId, Model model){
         ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticle(articleId));
+
         model.addAttribute("article", article);
         model.addAttribute("articleComments", article.getArticleCommentsResponse());
+        model.addAttribute("totalCount", articleService.getArticleCount());
+
         return "articles/detail";
     }
 
