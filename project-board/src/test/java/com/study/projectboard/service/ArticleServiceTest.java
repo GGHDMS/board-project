@@ -167,6 +167,21 @@ class ArticleServiceTest {
         then(articleRepository).should().deleteById(articleId);
     }
 
+    @DisplayName("게시글 수를 조회하면, 게시글 수를 반환한다")
+    @Test
+    void nothing_countingArticles_returnsArticleCount(){
+        //given
+        Long expected = 0L;
+        given(articleRepository.count()).willReturn(expected);
+
+        //when
+        long articleCount = sut.getArticleCount();
+
+        //then
+        assertThat(expected).isEqualTo(articleCount);
+        then(articleRepository).should().count();
+    }
+
 
 
 
