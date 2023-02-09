@@ -27,7 +27,6 @@ public class DataRestTest {
 
     @Autowired private MockMvc mvc;
 
-
     @DisplayName("[api] 게시글 리스트 조회")
     @Test
     public void nothingRequestingArticlesReturnsArticlesJsonResponse() throws Exception{
