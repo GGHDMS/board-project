@@ -25,7 +25,7 @@ public class ArticleComment extends AuditingFields{
     @ToString.Exclude
     private Article article; //게시글(ID)
 
-    @Column(nullable = false, length = 500)
+    @Setter @Column(nullable = false, length = 500)
     private String content; // 본문
 
     private ArticleComment(Article article, UserAccount userAccount, String content) {
