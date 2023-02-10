@@ -42,7 +42,7 @@ public class ArticleController {
             @RequestParam(required = false) SearchType searchType,
             @RequestParam(required = false) String searchValue,
             @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
-            Model model){
+            Model model) {
 
         Page<ArticleResponse> articles = articleService.searchArticles(searchType, searchValue, pageable).map(ArticleResponse::from);
         List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
@@ -55,7 +55,7 @@ public class ArticleController {
     }
 
     @GetMapping("/{articleId}")
-    public String articles(@PathVariable Long articleId, Model model){
+    public String articles(@PathVariable Long articleId, Model model) {
         ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticle(articleId));
 
         model.addAttribute("article", article);
@@ -66,5 +66,21 @@ public class ArticleController {
     }
 
 
+    @GetMapping("/search-hashtag")
+    public String searchHashtag(
+            @RequestParam(required = false) String searchValue,
+            @PageableDefault(size = 10, sort = "createdAt", direction = Sort.Direction.DESC) Pageable pageable,
+            Model model) {
+
+        Page<ArticleResponse> articles = articleService.searchArticlesViaHashtag(searchValue, pageable).map(ArticleResponse::from);
+        List<Integer> barNumbers = paginationService.getPaginationBarNumbers(pageable.getPageNumber(), articles.getTotalPages());
+        List<String> hashtags = articleService.getHashtags();
+
+        model.addAttribute("articles", articles);
+        model.addAttribute("hashtags", hashtags);
+        model.addAttribute("paginationBarNumbers", barNumbers);
+        model.addAttribute("searchType", SearchType.HASHTAG);
+        return "articles/search-hashtag";
+    }
 
 }
