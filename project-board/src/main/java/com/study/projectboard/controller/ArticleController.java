@@ -1,6 +1,9 @@
 package com.study.projectboard.controller;
 
-import com.study.projectboard.domain.type.SearchType;
+import com.study.projectboard.domain.constant.FormStatus;
+import com.study.projectboard.domain.constant.SearchType;
+import com.study.projectboard.dto.UserAccountDto;
+import com.study.projectboard.dto.request.ArticleRequest;
 import com.study.projectboard.dto.response.ArticleResponse;
 import com.study.projectboard.dto.response.ArticleWithCommentsResponse;
 import com.study.projectboard.service.ArticleService;
@@ -13,10 +16,7 @@ import org.springframework.data.domain.Sort;
 import org.springframework.data.web.PageableDefault;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
@@ -56,7 +56,7 @@ public class ArticleController {
 
     @GetMapping("/{articleId}")
     public String articles(@PathVariable Long articleId, Model model) {
-        ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticle(articleId));
+        ArticleWithCommentsResponse article = ArticleWithCommentsResponse.from(articleService.getArticleWithComments(articleId));
 
         model.addAttribute("article", article);
         model.addAttribute("articleComments", article.getArticleCommentsResponse());
@@ -82,5 +82,39 @@ public class ArticleController {
         model.addAttribute("searchType", SearchType.HASHTAG);
         return "articles/search-hashtag";
     }
+
+    @GetMapping("/form")
+    public String articleForm(Model model){
+        model.addAttribute("formStatus", FormStatus.CREATE);
+
+        return "articles/form";
+    }
+
+    @PostMapping("/form")
+    public String newArticle(@ModelAttribute ArticleRequest articleRequest){
+        articleService.saveArticle
+                (articleRequest.toDto(UserAccountDto.of(
+                        1L, "hsm", "asdf1234",  "hsm@mail.com", "Hsm", "I am Hsm.", null, null, null, null
+                )));
+        return "redirect:/articles";
+
+    }
+
+    @GetMapping("/{articleId}/form")
+    public String updateArticleForm(@PathVariable Long articleId, Model model){
+        ArticleResponse article = ArticleResponse.from(articleService.getArticle(articleId));
+        model.addAttribute("article", article);
+        model.addAttribute("formStatus", FormStatus.UPDATE);s
+
+        return "articles/form";
+    }
+
+    @PostMapping("{articleId}/delete")
+    public String deleteArticle(@PathVariable Long articleId){
+        articleService.deleteArticle(articleId);
+
+        return "redirect:/articles";
+    }
+
 
 }

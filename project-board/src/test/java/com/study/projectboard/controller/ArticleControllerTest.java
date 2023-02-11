@@ -1,11 +1,12 @@
 package com.study.projectboard.controller;
 
 import com.study.projectboard.config.SecurityConfig;
-import com.study.projectboard.domain.type.SearchType;
+import com.study.projectboard.domain.constant.SearchType;
 import com.study.projectboard.dto.ArticleWithCommentsDto;
 import com.study.projectboard.dto.UserAccountDto;
 import com.study.projectboard.service.ArticleService;
 import com.study.projectboard.service.PaginationService;
+import com.study.projectboard.util.FormDataEncoder;
 import org.junit.jupiter.api.Disabled;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -33,12 +34,14 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 
 
 @DisplayName("View 컨트롤러 - 게시글")
-@Import(SecurityConfig.class)
+@Import({SecurityConfig.class, FormDataEncoder.class})
 @WebMvcTest(ArticleController.class)
 class ArticleControllerTest {
 
     @Autowired
     private MockMvc mvc;
+    @Autowired
+    private FormDataEncoder formDataEncoder;
     @MockBean
     private ArticleService articleService;
     @MockBean
@@ -126,7 +129,7 @@ class ArticleControllerTest {
         //given
         Long articleId = 1L;
         long totalCount = 1L;
-        given(articleService.getArticle(articleId)).willReturn(createArticleWithCommentsDto());
+        given(articleService.getArticleWithComments(articleId)).willReturn(createArticleWithCommentsDto());
         given(articleService.getArticleCount()).willReturn(totalCount);
         //when&then
         mvc.perform(get("/articles/" + 1L))
@@ -137,7 +140,7 @@ class ArticleControllerTest {
                 .andExpect(model().attributeExists("articleComments"))
                 .andExpect(model().attribute("totalCount", totalCount));
 
-        then(articleService).should().getArticle(articleId);
+        then(articleService).should().getArticleWithComments(articleId);
         then(articleService).should().getArticleCount();
     }
 
