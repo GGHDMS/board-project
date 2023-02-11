@@ -39,6 +39,7 @@ dependencies {
 
     //querydsl 추가
     implementation "com.querydsl:querydsl-jpa:${queryDslVersion}"
+    testImplementation 'org.projectlombok:lombok:1.18.22'
     annotationProcessor "com.querydsl:querydsl-apt:${queryDslVersion}"
 
     runtimeOnly 'com.h2database:h2'
@@ -49,6 +50,7 @@ dependencies {
     annotationProcessor 'org.springframework.boot:spring-boot-configuration-processor'
 
     testImplementation 'org.springframework.boot:spring-boot-starter-test'
+    testImplementation 'org.springframework.security:spring-security-test'
 }
 
 //querydsl 추가 시작
