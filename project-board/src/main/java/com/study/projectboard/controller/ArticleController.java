@@ -104,7 +104,7 @@ public class ArticleController {
     public String updateArticleForm(@PathVariable Long articleId, Model model){
         ArticleResponse article = ArticleResponse.from(articleService.getArticle(articleId));
         model.addAttribute("article", article);
-        model.addAttribute("formStatus", FormStatus.UPDATE);s
+        model.addAttribute("formStatus", FormStatus.UPDATE);
 
         return "articles/form";
     }
