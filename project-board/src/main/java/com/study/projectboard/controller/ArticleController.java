@@ -94,7 +94,7 @@ public class ArticleController {
     public String newArticle(@ModelAttribute ArticleRequest articleRequest){
         articleService.saveArticle
                 (articleRequest.toDto(UserAccountDto.of(
-                        1L, "hsm", "asdf1234",  "hsm@mail.com", "Hsm", "I am Hsm.", null, null, null, null
+                        1L, "hsm", "asdf1234",  "hsm@mail.com", "Hsm", "I am Hsm."
                 )));
         return "redirect:/articles";
 
@@ -107,6 +107,15 @@ public class ArticleController {
         model.addAttribute("formStatus", FormStatus.UPDATE);
 
         return "articles/form";
+    }
+
+    @PostMapping("/{articleId}/form")
+    public String updateArticle(@PathVariable Long articleId, @ModelAttribute ArticleRequest articleRequest){
+        articleService.updateArticle(articleId, articleRequest.toDto(UserAccountDto.of(
+                1L, "hsm", "asdf1234",  "hsm@mail.com", "Hsm", "I am Hsm."
+        )));
+
+        return "redirect:/articles/" + articleId;
     }
 
     @PostMapping("{articleId}/delete")
