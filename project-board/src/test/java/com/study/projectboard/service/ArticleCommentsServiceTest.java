@@ -7,6 +7,7 @@ import com.study.projectboard.dto.ArticleCommentDto;
 import com.study.projectboard.dto.UserAccountDto;
 import com.study.projectboard.repository.ArticleCommentRepository;
 import com.study.projectboard.repository.ArticleRepository;
+import com.study.projectboard.repository.UserAccountRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -29,11 +30,12 @@ class ArticleCommentsServiceTest {
 
     @InjectMocks
     private ArticleCommentsService sut;
-
     @Mock
     private ArticleCommentRepository articleCommentRepository;
     @Mock
     private ArticleRepository articleRepository;
+    @Mock
+    private UserAccountRepository userAccountRepository;
 
 
     @DisplayName("게시글 ID로 조회하면, 댓글 리스트를 반환한다.")
@@ -60,6 +62,7 @@ class ArticleCommentsServiceTest {
         //given
         ArticleCommentDto dto = createArticleCommentDto("댓글");
         given(articleRepository.getReferenceById(dto.getArticleId())).willReturn(createArticle());
+        given(userAccountRepository.getReferenceById(dto.getUserAccountDto().getId())).willReturn(createUserAccount());
         given(articleCommentRepository.save(any(ArticleComment.class))).willReturn(null); // save 호출 될거다
 
         //when
@@ -67,7 +70,9 @@ class ArticleCommentsServiceTest {
 
         //then
         then(articleRepository).should().getReferenceById(dto.getArticleId());
-        then(articleCommentRepository).should().save(any(ArticleComment.class)); // 호출 되었냐 ?
+        then(userAccountRepository).should().getReferenceById(dto.getUserAccountDto().getId());
+        then(articleCommentRepository).should().save(any(ArticleComment.class));
+        // 호출 되었냐 ?
     }
 
 
@@ -84,6 +89,7 @@ class ArticleCommentsServiceTest {
 
         // Then
         then(articleRepository).should().getReferenceById(dto.getArticleId());
+        then(userAccountRepository).shouldHaveNoInteractions();
         then(articleCommentRepository).shouldHaveNoInteractions();
     }
 

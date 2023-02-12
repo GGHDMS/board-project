@@ -2,6 +2,7 @@ package com.study.projectboard.dto;
 
 import com.study.projectboard.domain.Article;
 import com.study.projectboard.domain.ArticleComment;
+import com.study.projectboard.domain.UserAccount;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -33,6 +34,10 @@ public class ArticleCommentDto {
         return new ArticleCommentDto(id, articleId, userAccountDto, content, createdAt, createdBy, modifiedAt, modifiedBy);
     }
 
+    public static ArticleCommentDto of(Long articleId, UserAccountDto userAccountDto, String content) {
+        return new ArticleCommentDto(null, articleId, userAccountDto, content, null, null, null, null);
+    }
+
     public static ArticleCommentDto from(ArticleComment entity) {
         return new ArticleCommentDto(
                 entity.getId(),
@@ -46,10 +51,10 @@ public class ArticleCommentDto {
         );
     }
 
-    public ArticleComment toEntity(Article entity) {
+    public ArticleComment toEntity(Article article, UserAccount userAccount) {
         return ArticleComment.of(
-                entity,
-                userAccountDto.toEntity(),
+                article,
+                userAccount,
                 content
         );
     }
