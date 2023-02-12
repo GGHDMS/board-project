@@ -1,9 +1,12 @@
 package com.study.projectboard.service;
 
+import com.study.projectboard.domain.Article;
 import com.study.projectboard.domain.ArticleComment;
+import com.study.projectboard.domain.UserAccount;
 import com.study.projectboard.dto.ArticleCommentDto;
 import com.study.projectboard.repository.ArticleCommentRepository;
 import com.study.projectboard.repository.ArticleRepository;
+import com.study.projectboard.repository.UserAccountRepository;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
@@ -21,6 +24,7 @@ public class ArticleCommentsService {
 
     private final ArticleCommentRepository articleCommentRepository;
     private final ArticleRepository articleRepository;
+    private final UserAccountRepository userAccountRepository;
 
     public List<ArticleCommentDto> searchArticleComments(Long articleId) {
         return articleCommentRepository.findByArticle_Id(articleId).stream().map(ArticleCommentDto::from).collect(Collectors.toList());
@@ -29,9 +33,11 @@ public class ArticleCommentsService {
     @Transactional
     public void saveArticleComment(ArticleCommentDto dto) {
         try {
-            articleCommentRepository.save(dto.toEntity(articleRepository.getReferenceById(dto.getArticleId())));
+            Article article = articleRepository.getReferenceById(dto.getArticleId());
+            UserAccount userAccount = userAccountRepository.getReferenceById(dto.getUserAccountDto().getId());
+            articleCommentRepository.save(dto.toEntity(article, userAccount));
         } catch (EntityNotFoundException e) {
-            log.info("댓글 저장 실패, 댓글의 게시글을 찾을 수 없습니다 - dto: {}", dto);
+            log.info("댓글 저장 실패, 댓글 저장에 필요한 정보를 찾을수 없습니다. - {}", e.getLocalizedMessage());
         }
     }
 
