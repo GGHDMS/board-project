@@ -1,7 +1,7 @@
 package com.study.projectboard.controller;
 
 
-import com.study.projectboard.config.SecurityConfig;
+import com.study.projectboard.config.TestSecurityConfig;
 import com.study.projectboard.service.ArticleService;
 import com.study.projectboard.service.PaginationService;
 import org.junit.jupiter.api.DisplayName;
@@ -18,7 +18,7 @@ import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 @DisplayName("View 컨트롤러 - 인증")
-@Import(SecurityConfig.class)
+@Import(TestSecurityConfig.class)
 @WebMvcTest(ArticleController.class)
 public class AuthControllerTest {
 

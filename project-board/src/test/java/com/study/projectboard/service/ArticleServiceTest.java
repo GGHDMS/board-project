@@ -186,14 +186,14 @@ class ArticleServiceTest {
     public void articleInfo_savingArticle_savesArticle() throws Exception {
         //given
         ArticleDto dto = createArticleDto();
-        given(userAccountRepository.getReferenceById(dto.getUserAccountDto().getId())).willReturn(createUserAccount());
+        given(userAccountRepository.getReferenceById(dto.getUserAccountDto().getUserId())).willReturn(createUserAccount());
         given(articleRepository.save(any(Article.class))).willReturn(createArticle());
 
         //when
         sut.saveArticle(dto);
 
         //then
-        then(userAccountRepository).should().getReferenceById(dto.getUserAccountDto().getId());
+        then(userAccountRepository).should().getReferenceById(dto.getUserAccountDto().getUserId());
         then(articleRepository).should().save(any(Article.class)); // 호출 되었냐 ?
     }
 
@@ -205,6 +205,7 @@ class ArticleServiceTest {
         Article article = createArticle();
         ArticleDto dto = createArticleDto("새 타이틀", "새 내용", "#springboot");
         given(articleRepository.getReferenceById(dto.getId())).willReturn(article);
+        given(userAccountRepository.getReferenceById(dto.getUserAccountDto().getUserId())).willReturn(article.getUserAccount());
 
         //when
         sut.updateArticle(dto.getId(), dto);
@@ -216,6 +217,7 @@ class ArticleServiceTest {
                 .hasFieldOrPropertyWithValue("hashtag", dto.getHashtag());
 
         then(articleRepository).should().getReferenceById(dto.getId());
+        then(userAccountRepository).should().getReferenceById(dto.getUserAccountDto().getUserId());
     }
 
     @DisplayName("없는 게시글의 수정 정보를 입력하면, 경고 로그를 찍고 아무 것도 하지 않는다.")
@@ -237,13 +239,14 @@ class ArticleServiceTest {
     public void articleID_deletingArticle_deletesArticle() throws Exception {
         //given
         Long articleId = 1L;
-        willDoNothing().given(articleRepository).deleteById(articleId);
+        String userId = "hsm";
+        willDoNothing().given(articleRepository).deleteByIdAndUserAccount_UserId(articleId, userId);
 
         //when
-        sut.deleteArticle(1L);
+        sut.deleteArticle(articleId, userId);
 
         //then
-        then(articleRepository).should().deleteById(articleId);
+        then(articleRepository).should().deleteByIdAndUserAccount_UserId(articleId, userId);
     }
 
     @DisplayName("게시글 수를 조회하면, 게시글 수를 반환한다")

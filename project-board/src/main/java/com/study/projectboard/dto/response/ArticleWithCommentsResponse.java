@@ -17,9 +17,11 @@ public class ArticleWithCommentsResponse {
     LocalDateTime createdAt;
     String email;
     String nickname;
+    String userId;
+
     Set<ArticleCommentResponse> articleCommentsResponse;
 
-    private ArticleWithCommentsResponse(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname, Set<ArticleCommentResponse> articleCommentsResponse) {
+    private ArticleWithCommentsResponse(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname, String userId, Set<ArticleCommentResponse> articleCommentsResponse) {
         this.id = id;
         this.title = title;
         this.content = content;
@@ -27,11 +29,12 @@ public class ArticleWithCommentsResponse {
         this.createdAt = createdAt;
         this.email = email;
         this.nickname = nickname;
+        this.userId = userId;
         this.articleCommentsResponse = articleCommentsResponse;
     }
 
-    public static ArticleWithCommentsResponse of(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname, Set<ArticleCommentResponse> articleCommentResponses) {
-        return new ArticleWithCommentsResponse(id, title, content, hashtag, createdAt, email, nickname, articleCommentResponses);
+    public static ArticleWithCommentsResponse of(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname, String userId, Set<ArticleCommentResponse> articleCommentResponses) {
+        return new ArticleWithCommentsResponse(id, title, content, hashtag, createdAt, email, nickname, userId, articleCommentResponses);
     }
 
     public static ArticleWithCommentsResponse from(ArticleWithCommentsDto dto) {
@@ -48,6 +51,7 @@ public class ArticleWithCommentsResponse {
                 dto.getCreatedAt(),
                 dto.getUserAccountDto().getEmail(),
                 nickname,
+                dto.getUserAccountDto().getUserId(),
                 dto.getArticleCommentDtos().stream()
                         .map(ArticleCommentResponse::from)
                         .collect(Collectors.toCollection(LinkedHashSet::new))

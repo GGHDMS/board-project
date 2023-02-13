@@ -18,7 +18,7 @@ import java.util.Objects;
 public class ArticleComment extends AuditingFields{
     @Id @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Setter @ManyToOne(optional = false)  //userAccount 가 무조건 있다
+    @Setter @ManyToOne(optional = false) @JoinColumn(name = "userId") //userAccount 가 무조건 있다
     private UserAccount userAccount;
     @Setter
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
