@@ -7,7 +7,6 @@ import java.time.LocalDateTime;
 
 @Data
 public class UserAccountDto {
-    Long id;
     String userId;
     String userPassword;
     String email;
@@ -18,8 +17,7 @@ public class UserAccountDto {
     LocalDateTime modifiedAt;
     String modifiedBy;
 
-    private UserAccountDto(Long id, String userId, String userPassword, String email, String nickname, String memo, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy) {
-        this.id = id;
+    private UserAccountDto(String userId, String userPassword, String email, String nickname, String memo, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy) {
         this.userId = userId;
         this.userPassword = userPassword;
         this.email = email;
@@ -32,16 +30,15 @@ public class UserAccountDto {
     }
 
     public static UserAccountDto of(Long id, String userId, String userPassword, String email, String nickname, String memo, LocalDateTime createdAt, String createdBy, LocalDateTime modifiedAt, String modifiedBy) {
-        return new UserAccountDto(id, userId, userPassword, email, nickname, memo, createdAt, createdBy, modifiedAt, modifiedBy);
+        return new UserAccountDto(userId, userPassword, email, nickname, memo, createdAt, createdBy, modifiedAt, modifiedBy);
     }
 
-    public static UserAccountDto of(Long id, String userId, String userPassword, String email, String nickname, String memo) {
-        return new UserAccountDto(id, userId, userPassword, email, nickname, memo, null, null, null, null);
+    public static UserAccountDto of(String userId, String userPassword, String email, String nickname, String memo) {
+        return new UserAccountDto(userId, userPassword, email, nickname, memo, null, null, null, null);
     }
 
     public static UserAccountDto from(UserAccount entity) {
         return new UserAccountDto(
-                entity.getId(),
                 entity.getUserId(),
                 entity.getUserPassword(),
                 entity.getEmail(),
