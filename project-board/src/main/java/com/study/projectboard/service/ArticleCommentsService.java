@@ -34,7 +34,7 @@ public class ArticleCommentsService {
     public void saveArticleComment(ArticleCommentDto dto) {
         try {
             Article article = articleRepository.getReferenceById(dto.getArticleId());
-            UserAccount userAccount = userAccountRepository.getReferenceById(dto.getUserAccountDto().getId());
+            UserAccount userAccount = userAccountRepository.getReferenceById(dto.getUserAccountDto().getUserId());
             articleCommentRepository.save(dto.toEntity(article, userAccount));
         } catch (EntityNotFoundException e) {
             log.info("댓글 저장 실패, 댓글 저장에 필요한 정보를 찾을수 없습니다. - {}", e.getLocalizedMessage());
@@ -45,17 +45,20 @@ public class ArticleCommentsService {
     public void updateArticleComment(ArticleCommentDto dto) {
         try {
             ArticleComment articleComment = articleCommentRepository.getReferenceById(dto.getId());
-            if (dto.getContent() != null) {
-                articleComment.setContent(dto.getContent());
+            UserAccount userAccount = userAccountRepository.getReferenceById(dto.getUserAccountDto().getUserId());
+            if(articleComment.getUserAccount().equals(userAccount)){
+                if (dto.getContent() != null) {
+                    articleComment.setContent(dto.getContent());
+                }
             }
         } catch (EntityNotFoundException e) {
-            log.info("댓글 업데이트 실패, 댓글을 찾을 수 없습니다 - dto: {}", dto);
+            log.info("댓글 업데이트 실패, 댓글 수정에 필요한 정보를 찾을수 없습니다. - {}", e.getLocalizedMessage());
         }
 
     }
 
     @Transactional
-    public void deleteArticleComment(Long articleCommentId) {
-        articleCommentRepository.deleteById(articleCommentId);
+    public void deleteArticleComment(Long articleCommentId, String userId) {
+        articleCommentRepository.deleteByIdAndUserAccount_UserId(articleCommentId, userId);
     }
 }

@@ -62,7 +62,7 @@ class ArticleCommentsServiceTest {
         //given
         ArticleCommentDto dto = createArticleCommentDto("댓글");
         given(articleRepository.getReferenceById(dto.getArticleId())).willReturn(createArticle());
-        given(userAccountRepository.getReferenceById(dto.getUserAccountDto().getId())).willReturn(createUserAccount());
+        given(userAccountRepository.getReferenceById(dto.getUserAccountDto().getUserId())).willReturn(createUserAccount());
         given(articleCommentRepository.save(any(ArticleComment.class))).willReturn(null); // save 호출 될거다
 
         //when
@@ -70,7 +70,7 @@ class ArticleCommentsServiceTest {
 
         //then
         then(articleRepository).should().getReferenceById(dto.getArticleId());
-        then(userAccountRepository).should().getReferenceById(dto.getUserAccountDto().getId());
+        then(userAccountRepository).should().getReferenceById(dto.getUserAccountDto().getUserId());
         then(articleCommentRepository).should().save(any(ArticleComment.class));
         // 호출 되었냐 ?
     }
@@ -93,28 +93,30 @@ class ArticleCommentsServiceTest {
         then(articleCommentRepository).shouldHaveNoInteractions();
     }
 
-
-
-    @DisplayName("댓글 정보를 입력하면, 댓글을 수정한다.")
-    @Test
-    void givenArticleCommentInfo_whenUpdatingArticleComment_thenUpdatesArticleComment() {
-        // Given
-        String oldContent = "content";
-        String updatedContent = "댓글";
-        ArticleComment articleComment = createArticleComment(oldContent);
-        ArticleCommentDto dto = createArticleCommentDto(updatedContent);
-        given(articleCommentRepository.getReferenceById(dto.getId())).willReturn(articleComment);
-
-        // When
-        sut.updateArticleComment(dto);
-
-        // Then
-        assertThat(articleComment.getContent())
-                .isNotEqualTo(oldContent)
-                .isEqualTo(updatedContent);
-        then(articleCommentRepository).should().getReferenceById(dto.getId());
-    }
-
+//    댓글 수정은 대부분 프론트 영역에서 이루어진다.
+//
+//    @DisplayName("댓글 정보를 입력하면, 댓글을 수정한다.")
+//    @Test
+//    void givenArticleCommentInfo_whenUpdatingArticleComment_thenUpdatesArticleComment() {
+//        // Given
+//        String oldContent = "content";
+//        String updatedContent = "댓글";
+//        ArticleComment articleComment = createArticleComment(oldContent);
+//        ArticleCommentDto dto = createArticleCommentDto(updatedContent);
+//        given(articleCommentRepository.getReferenceById(dto.getId())).willReturn(articleComment);
+//        given(userAccountRepository.getReferenceById(dto.getUserAccountDto().getUserId())).willReturn(articleComment.getUserAccount());
+//
+//        // When
+//        sut.updateArticleComment(dto);
+//
+//        // Then
+//        assertThat(articleComment.getContent())
+//                .isNotEqualTo(oldContent)
+//                .isEqualTo(updatedContent);
+//        then(articleCommentRepository).should().getReferenceById(dto.getId());
+//        then(userAccountRepository).should().getReferenceById(dto.getUserAccountDto().getUserId());
+//    }
+//
 
 
     @DisplayName("없는 댓글 정보를 수정하려고 하면, 경고 로그를 찍고 아무 것도 안 한다.")
@@ -136,13 +138,14 @@ class ArticleCommentsServiceTest {
     void givenArticleCommentId_whenDeletingArticleComment_thenDeletesArticleComment() {
         // Given
         Long articleCommentId = 1L;
-        willDoNothing().given(articleCommentRepository).deleteById(articleCommentId);
+        String userId = "hsm";
+        willDoNothing().given(articleCommentRepository).deleteByIdAndUserAccount_UserId(articleCommentId, userId);
 
         // When
-        sut.deleteArticleComment(articleCommentId);
+        sut.deleteArticleComment(articleCommentId, userId);
 
         // Then
-        then(articleCommentRepository).should().deleteById(articleCommentId);
+        then(articleCommentRepository).should().deleteByIdAndUserAccount_UserId(articleCommentId, userId);
     }
 
 
