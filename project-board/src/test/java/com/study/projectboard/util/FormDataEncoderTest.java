@@ -1,8 +1,6 @@
 package com.study.projectboard.util;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -60,8 +58,7 @@ class FormDataEncoderTest {
         );
     }
 
-    @Data
-    @AllArgsConstructor
+
     static class TestObject {
         String str;
         String listStr1;
@@ -72,6 +69,54 @@ class FormDataEncoderTest {
         Boolean bool;
         BigDecimal bigDecimal;
         TestEnum testEnum;
+
+        public TestObject(String str, String listStr1, String listStr2, String nullStr, Integer number, Double floatingNumber, Boolean bool, BigDecimal bigDecimal, TestEnum testEnum) {
+            this.str = str;
+            this.listStr1 = listStr1;
+            this.listStr2 = listStr2;
+            this.nullStr = nullStr;
+            this.number = number;
+            this.floatingNumber = floatingNumber;
+            this.bool = bool;
+            this.bigDecimal = bigDecimal;
+            this.testEnum = testEnum;
+        }
+
+        public String getStr() {
+            return str;
+        }
+
+        public String getListStr1() {
+            return listStr1;
+        }
+
+        public String getListStr2() {
+            return listStr2;
+        }
+
+        public String getNullStr() {
+            return nullStr;
+        }
+
+        public Integer getNumber() {
+            return number;
+        }
+
+        public Double getFloatingNumber() {
+            return floatingNumber;
+        }
+
+        public Boolean getBool() {
+            return bool;
+        }
+
+        public BigDecimal getBigDecimal() {
+            return bigDecimal;
+        }
+
+        public TestEnum getTestEnum() {
+            return testEnum;
+        }
     }
 
     enum TestEnum {
