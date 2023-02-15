@@ -13,7 +13,7 @@ plugins {
 }
 
 group = 'com.study'
-version = '0.0.1-SNAPSHOT'
+version = 'v1.1'
 sourceCompatibility = '11'
 
 configurations {
@@ -44,6 +44,7 @@ dependencies {
 
     runtimeOnly 'com.h2database:h2'
     runtimeOnly 'com.mysql:mysql-connector-j'
+    runtimeOnly 'org.mariadb.jdbc:mariadb-java-client'
     compileOnly 'org.projectlombok:lombok'
     developmentOnly 'org.springframework.boot:spring-boot-devtools'
     annotationProcessor 'org.projectlombok:lombok'
