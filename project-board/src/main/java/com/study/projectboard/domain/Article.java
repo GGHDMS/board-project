@@ -56,12 +56,12 @@ public class Article extends AuditingFields{
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof Article )) return false;
-        Article article = (Article) o;
-        return id != null && id.equals(article.id); //id != null 영속화 되지 않으면 false
+        Article that = (Article) o;
+        return this.getId() != null && this.getId().equals(that.getId()); //id != null 영속화 되지 않으면 false
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(id);
+        return Objects.hash(this.getId());
     }
 }
