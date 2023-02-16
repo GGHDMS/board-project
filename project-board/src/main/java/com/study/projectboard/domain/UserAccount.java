@@ -43,13 +43,13 @@ public class UserAccount extends AuditingFields {
     public boolean equals(Object o) {
         if (this == o) return true;
         if (!(o instanceof UserAccount)) return false;
-        UserAccount userAccount = (UserAccount) o;
-        return userId != null && userId.equals(userAccount.userId);
+        UserAccount that = (UserAccount) o;
+        return this.getUserId() != null && this.getUserId().equals(that.getUserId());
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(userId);
+        return Objects.hash(this.getUserId());
     }
 
 }
