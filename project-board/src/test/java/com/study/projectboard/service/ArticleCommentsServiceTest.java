@@ -2,11 +2,13 @@ package com.study.projectboard.service;
 
 import com.study.projectboard.domain.Article;
 import com.study.projectboard.domain.ArticleComment;
+import com.study.projectboard.domain.Hashtag;
 import com.study.projectboard.domain.UserAccount;
 import com.study.projectboard.dto.ArticleCommentDto;
 import com.study.projectboard.dto.UserAccountDto;
 import com.study.projectboard.repository.ArticleCommentRepository;
 import com.study.projectboard.repository.ArticleRepository;
+import com.study.projectboard.repository.HashtagRepository;
 import com.study.projectboard.repository.UserAccountRepository;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
@@ -18,6 +20,7 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import javax.persistence.EntityNotFoundException;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Set;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
@@ -181,7 +184,7 @@ class ArticleCommentsServiceTest {
 
     private ArticleComment createArticleComment(String content) {
         return ArticleComment.of(
-                Article.of(createUserAccount(), "title", "content", "hashtag"),
+                createArticle(),
                 createUserAccount(),
                 content
         );
@@ -198,12 +201,19 @@ class ArticleCommentsServiceTest {
     }
 
     private Article createArticle() {
-        return Article.of(
+        Article article = Article.of(
                 createUserAccount(),
                 "title",
-                "content",
-                "#java"
+                "content"
         );
+
+        article.addHashtags(Set.of(createHashtag(article)));
+        return article;
+    }
+
+
+    private Hashtag createHashtag(Article article) {
+        return Hashtag.of("java");
     }
 
 }

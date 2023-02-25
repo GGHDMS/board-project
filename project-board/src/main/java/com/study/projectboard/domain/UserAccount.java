@@ -1,14 +1,13 @@
 package com.study.projectboard.domain;
 
-import lombok.Getter;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 
 import javax.persistence.*;
 import java.util.Objects;
 
 @Getter
 @ToString
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(indexes = {
         @Index(columnList = "email", unique = true),
         @Index(columnList = "createdAt"),
@@ -25,7 +24,6 @@ public class UserAccount extends AuditingFields {
     @Setter private String memo;
 
 
-    protected UserAccount() {}
 
     private UserAccount(String userId, String userPassword, String email, String nickname, String memo) {
         this.userId = userId;
