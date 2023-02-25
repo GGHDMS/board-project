@@ -1,32 +1,35 @@
 package com.study.projectboard.dto.response;
 
 import com.study.projectboard.dto.ArticleDto;
+import com.study.projectboard.dto.HashtagDto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
+import java.util.Set;
+import java.util.stream.Collectors;
 
 @Data
 public class ArticleResponse {
     Long id;
     String title;
     String content;
-    String hashtag;
+    Set<String> hashtags;
     LocalDateTime createdAt;
     String email;
     String nickname;
 
-    private ArticleResponse(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname) {
+    private ArticleResponse(Long id, String title, String content, Set<String> hashtags, LocalDateTime createdAt, String email, String nickname) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.hashtag = hashtag;
+        this.hashtags = hashtags;
         this.createdAt = createdAt;
         this.email = email;
         this.nickname = nickname;
     }
 
-    public static ArticleResponse of(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname) {
-        return new ArticleResponse(id, title, content, hashtag, createdAt, email, nickname);
+    public static ArticleResponse of(Long id, String title, String content, Set<String> hashtags, LocalDateTime createdAt, String email, String nickname) {
+        return new ArticleResponse(id, title, content, hashtags, createdAt, email, nickname);
     }
 
     public static ArticleResponse from(ArticleDto dto) {
@@ -39,7 +42,9 @@ public class ArticleResponse {
                 dto.getId(),
                 dto.getTitle(),
                 dto.getContent(),
-                dto.getHashtag(),
+                dto.getHashtagDtos().stream()
+                        .map(HashtagDto::getHashtagName)
+                        .collect(Collectors.toUnmodifiableSet()),
                 dto.getCreatedAt(),
                 dto.getUserAccountDto().getEmail(),
                 nickname

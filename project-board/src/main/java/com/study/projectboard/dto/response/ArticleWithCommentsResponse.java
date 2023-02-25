@@ -1,6 +1,7 @@
 package com.study.projectboard.dto.response;
 
 import com.study.projectboard.dto.ArticleWithCommentsDto;
+import com.study.projectboard.dto.HashtagDto;
 import lombok.Data;
 
 import java.time.LocalDateTime;
@@ -13,7 +14,7 @@ public class ArticleWithCommentsResponse {
     Long id;
     String title;
     String content;
-    String hashtag;
+    Set<String> hashtags;
     LocalDateTime createdAt;
     String email;
     String nickname;
@@ -21,11 +22,11 @@ public class ArticleWithCommentsResponse {
 
     Set<ArticleCommentResponse> articleCommentsResponse;
 
-    private ArticleWithCommentsResponse(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname, String userId, Set<ArticleCommentResponse> articleCommentsResponse) {
+    private ArticleWithCommentsResponse(Long id, String title, String content, Set<String> hashtags, LocalDateTime createdAt, String email, String nickname, String userId, Set<ArticleCommentResponse> articleCommentsResponse) {
         this.id = id;
         this.title = title;
         this.content = content;
-        this.hashtag = hashtag;
+        this.hashtags = hashtags;
         this.createdAt = createdAt;
         this.email = email;
         this.nickname = nickname;
@@ -33,8 +34,8 @@ public class ArticleWithCommentsResponse {
         this.articleCommentsResponse = articleCommentsResponse;
     }
 
-    public static ArticleWithCommentsResponse of(Long id, String title, String content, String hashtag, LocalDateTime createdAt, String email, String nickname, String userId, Set<ArticleCommentResponse> articleCommentResponses) {
-        return new ArticleWithCommentsResponse(id, title, content, hashtag, createdAt, email, nickname, userId, articleCommentResponses);
+    public static ArticleWithCommentsResponse of(Long id, String title, String content, Set<String> hashtags, LocalDateTime createdAt, String email, String nickname, String userId, Set<ArticleCommentResponse> articleCommentResponses) {
+        return new ArticleWithCommentsResponse(id, title, content, hashtags, createdAt, email, nickname, userId, articleCommentResponses);
     }
 
     public static ArticleWithCommentsResponse from(ArticleWithCommentsDto dto) {
@@ -47,7 +48,9 @@ public class ArticleWithCommentsResponse {
                 dto.getId(),
                 dto.getTitle(),
                 dto.getContent(),
-                dto.getHashtag(),
+                dto.getHashtagDtos().stream()
+                        .map(HashtagDto::getHashtagName)
+                        .collect(Collectors.toUnmodifiableSet()),
                 dto.getCreatedAt(),
                 dto.getUserAccountDto().getEmail(),
                 nickname,
