@@ -39,7 +39,6 @@ class ArticleCommentControllerTest {
     @MockBean
     private ArticleCommentsService articleCommentsService;
 
-
     @WithUserDetails(value = "hsmTest", userDetailsServiceBeanName = "userDetailsService", setupBefore = TestExecutionEvent.TEST_EXECUTION)
     @DisplayName("[view][post] 댓글 등록 - 정상 호출")
     @Test

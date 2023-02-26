@@ -38,8 +38,6 @@ import static org.mockito.BDDMockito.*;
 @DisplayName("비즈니스 로직 - 게시판")
 @ExtendWith(MockitoExtension.class)
 class ArticleServiceTest {
-
-
     @InjectMocks
     private ArticleService sut;
     @Mock
