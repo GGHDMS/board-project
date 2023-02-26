@@ -20,7 +20,7 @@ public interface ArticleCommentRepository
 
     List<ArticleComment> findByArticle_Id(Long articleId);
 
-    void deleteByIdAndUserAccount_UserId(Long articleId, String userId);
+    void deleteByIdAndUserAccount_UserId(Long articleId, String userId); // 게시글의 articleId 와 userId 모두 같을 때 delete 될 수 있게
 
     @Override
     default void customize(QuerydslBindings bindings, QArticleComment root){
