@@ -8,9 +8,9 @@ import java.util.Objects;
 import java.util.Set;
 
 
-@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Getter
 @ToString(callSuper = true)
+@NoArgsConstructor(access = AccessLevel.PROTECTED)
 @Table(indexes = {
         @Index(columnList = "content"),
         @Index(columnList = "createdAt"),
@@ -22,14 +22,15 @@ public class ArticleComment extends AuditingFields {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
+    @ToString.Exclude
     @Setter
     @ManyToOne(optional = false, fetch = FetchType.LAZY)
-    @ToString.Exclude
     private Article article; //게시글(ID)
 
     @Setter
-    @ManyToOne(optional = false)
-    @JoinColumn(name = "userId") //userAccount 가 무조건 있다
+    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    @ToString.Exclude //userAccount 가 무조건 있다
     private UserAccount userAccount;
 
     @ToString.Exclude
