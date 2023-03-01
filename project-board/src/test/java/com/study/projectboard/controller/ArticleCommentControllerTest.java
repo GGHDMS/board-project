@@ -86,5 +86,30 @@ class ArticleCommentControllerTest {
     }
 
 
+    @WithUserDetails(value = "hsmTest", userDetailsServiceBeanName = "userDetailsService", setupBefore = TestExecutionEvent.TEST_EXECUTION)
+    @DisplayName("[view][post] 대댓글 등록 - 정상 호출")
+    @Test
+    void addCommentReply() throws Exception {
+        // Given
+        Long articleId = 1L;
+        ArticleCommentRequest articleCommentRequest = ArticleCommentRequest.of(articleId, 1L, "test comment"); // 게시글 id, 부모 댓글 id, content 입력
+        willDoNothing().given(articleCommentsService).saveArticleComment(any(ArticleCommentDto.class));
+
+        // When & Then
+        mvc.perform(
+                        post("/comments/new")
+                                .contentType(MediaType.APPLICATION_FORM_URLENCODED)
+                                .content(formDataEncoder.encode(articleCommentRequest))
+                                .with(csrf())
+                )
+                .andExpect(status().is3xxRedirection())
+                .andExpect(view().name("redirect:/articles/" + articleId))
+                .andExpect(redirectedUrl("/articles/" + articleId));
+        then(articleCommentsService).should().saveArticleComment(any(ArticleCommentDto.class));
+    }
+
+
+
+
 
 }
