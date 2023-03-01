@@ -35,7 +35,14 @@ public class ArticleCommentsService {
         try {
             Article article = articleRepository.getReferenceById(dto.getArticleId());
             UserAccount userAccount = userAccountRepository.getReferenceById(dto.getUserAccountDto().getUserId());
-            articleCommentRepository.save(dto.toEntity(article, userAccount));
+            ArticleComment articleComment = dto.toEntity(article, userAccount);
+
+            if (dto.getParentCommentId() != null) { // 대댓글인지 확인
+                ArticleComment parentComment = articleCommentRepository.getReferenceById(dto.getParentCommentId());
+                parentComment.addChildComment(articleComment);
+            } else {
+                articleCommentRepository.save(articleComment); // 부모 댓글일 때는 직접 save 호출
+            }
         } catch (EntityNotFoundException e) {
             log.info("댓글 저장 실패, 댓글 저장에 필요한 정보를 찾을수 없습니다. - {}", e.getLocalizedMessage());
         }
