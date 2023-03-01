@@ -9,7 +9,7 @@ import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
-public class ArticleResponse {
+public class ArticleResponse { // 단순 게시글 정보
     Long id;
     String title;
     String content;
