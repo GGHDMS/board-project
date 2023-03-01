@@ -65,7 +65,6 @@ public class ArticleController {
         model.addAttribute("totalCount", articleService.getArticleCount());
         model.addAttribute("searchTypeHashtag", SearchType.HASHTAG);
 
-
         return "articles/detail";
     }
 
