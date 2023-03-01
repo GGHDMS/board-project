@@ -22,6 +22,7 @@ public class ArticleCommentController {
             @AuthenticationPrincipal BoardPrincipal boardPrincipal
     ) {
         articleCommentsService.saveArticleComment(articleCommentRequest.toDto(boardPrincipal.toDto()));
+
         return "redirect:/articles/" + articleCommentRequest.getArticleId();
     }
 
@@ -31,10 +32,9 @@ public class ArticleCommentController {
             @RequestParam Long articleId,
             @AuthenticationPrincipal BoardPrincipal boardPrincipal
     ) {
-        String username = boardPrincipal.getUsername();
-        articleCommentsService.deleteArticleComment(articleCommentId, username);
+        articleCommentsService.deleteArticleComment(articleCommentId, boardPrincipal.getUsername());
+
         return "redirect:/articles/" + articleId;
     }
-
-
 }
+

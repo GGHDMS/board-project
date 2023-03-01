@@ -18,30 +18,38 @@ import java.util.Set;
         @Index(columnList = "createdBy"),
 })
 @Entity
-public class Article extends AuditingFields{
+public class Article extends AuditingFields {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Setter @ManyToOne(optional = false) @JoinColumn(name = "userId")//userAccount 가 무조건 있다
+
+    @Setter
+    @ManyToOne(optional = false,  fetch = FetchType.LAZY)
+    @JoinColumn(name = "userId")
+    @ToString.Exclude//userAccount 가 무조건 있다
     private UserAccount userAccount;
-    @Setter @Column(nullable = false)
+
+    @Setter
+    @Column(nullable = false)
     private String title; // 제목
-    @Setter @Column(nullable = false, length = 10000)
+
+    @Setter
+    @Column(nullable = false, length = 10000)
     private String content; // 본문
 
     @ToString.Exclude
-    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     @JoinTable(
             name = "article_hashtag",
             joinColumns = @JoinColumn(name = "articleId"),
             inverseJoinColumns = @JoinColumn(name = "hashtagId")
 
     )
+    @ManyToMany(cascade = {CascadeType.PERSIST, CascadeType.MERGE})
     private Set<Hashtag> hashtags = new LinkedHashSet<>();
 
+    @ToString.Exclude
     @OrderBy("createdAt DESC")
     @OneToMany(mappedBy = "article", cascade = CascadeType.ALL)
-    @ToString.Exclude
     private final Set<ArticleComment> articleComments = new LinkedHashSet<>();
 
     private Article(UserAccount userAccount, String title, String content) {
@@ -54,15 +62,15 @@ public class Article extends AuditingFields{
         return new Article(userAccount, title, content);
     }
 
-    public void addHashtag(Hashtag hashtag){
+    public void addHashtag(Hashtag hashtag) {
         this.hashtags.add(hashtag);
     }
 
-    public void addHashtags(Collection<Hashtag> hashtags){
+    public void addHashtags(Collection<Hashtag> hashtags) {
         this.getHashtags().addAll(hashtags);
     }
 
-    public void clearHashtags(){
+    public void clearHashtags() {
         this.getHashtags().clear();
     }
 
@@ -70,7 +78,7 @@ public class Article extends AuditingFields{
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof Article )) return false;
+        if (!(o instanceof Article)) return false;
         Article that = (Article) o;
         return this.getId() != null && this.getId().equals(that.getId()); //id != null 영속화 되지 않으면 false
     }
