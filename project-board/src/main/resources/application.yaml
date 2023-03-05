@@ -79,3 +79,19 @@ spring:
     detection-strategy: annotated
   thymeleaf3:
     decoupled-logic: true
+  security:
+    oauth2:
+      client:
+        registration:
+          kakao: # kakao 는 spring 에서 모르기 때문에 직접 입력해 줘야 된다.
+            client-id: ${KAKAO_OAUTH_CLIENT_ID} # kakao 에 접근할 때 id, key 값이 필요하다
+            client-secret: ${KAKAO_OAUTH_CLIENT_SECRET}
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/kakao" # 인증이 마무리 된 후로 되돌아 올 사이트 "" 는 {} 가 특수 문자 이기 때문에 문자열이라는 표시로 추가해 줘야된다.  https://localhost:8080/login/oauth2/code/kakao
+            client-authentication-method: POST # api 를 호출할 api method
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id # username 식별자를 id 로 하겠다
