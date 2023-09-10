@@ -28,7 +28,7 @@ public class ArticleComment extends AuditingFields {
     private Article article; //게시글(ID)
 
     @Setter
-    @ManyToOne(optional = false, fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "userId")
     @ToString.Exclude //userAccount 가 무조건 있다
     private UserAccount userAccount;

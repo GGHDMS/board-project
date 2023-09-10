@@ -24,7 +24,7 @@ public class Article extends AuditingFields {
     private Long id;
 
     @Setter
-    @ManyToOne(optional = false,  fetch = FetchType.LAZY)
+    @ManyToOne(optional = false)
     @JoinColumn(name = "userId")
     @ToString.Exclude//userAccount 가 무조건 있다
     private UserAccount userAccount;
