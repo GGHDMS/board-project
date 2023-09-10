@@ -291,7 +291,7 @@ class ArticleControllerTest {
                         post("/articles/" + articleId + "/form")
                                 .contentType(MediaType.APPLICATION_FORM_URLENCODED)
                                 .content(formDataEncoder.encode(articleRequest))
-//                                .with(csrf())
+                                .with(csrf())
                 )
                 .andExpect(status().is3xxRedirection())
                 .andExpect(view().name("redirect:/articles/" + articleId))

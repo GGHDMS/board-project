@@ -8,6 +8,10 @@ insert into user_account (user_id, user_password, nickname, email, memo, created
                           modified_by)
 values ('hsm2', '{noop}asdf1234', 'hsm2', 'hsm2@mail.com', 'I am hsm2.', now(), 'hsm2', now(), 'hsm2')
 ;
+insert into user_account (user_id, user_password, nickname, email, memo, created_at, created_by, modified_at,
+                          modified_by)
+values ('hsm3', '{noop}asdf1234', 'hsm3', 'hsm3@mail.com', 'I am hsm3.', now(), 'hsm3', now(), 'hsm3')
+;
 
 -- 123 게시글
 insert into article (user_id, title, content, created_by, modified_by, created_at, modified_at)
